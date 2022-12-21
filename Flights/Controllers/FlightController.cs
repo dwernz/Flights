@@ -18,9 +18,7 @@ namespace Flights.Controllers
 
         Random random = new Random();
 
-        [HttpGet]
-        public IEnumerable<FlightRm> Search() => new FlightRm[]
-        {
+        static private FlightRm[] flights = new FlightRm[] {
             new (   Guid.NewGuid(),
                 "American Airlines",
                 random.Next(90, 5000).ToString(),
@@ -70,5 +68,16 @@ namespace Flights.Controllers
                     new TimePlaceRm("Zagreb",DateTime.Now.AddHours(random.Next(4, 60))),
                         random.Next(1, 853))
         };
+
+        public FlightRm Find(Guid id)
+        => flights;
+
+
+
+        [HttpGet]
+        public IEnumerable<FlightRm> Search() => flights;
+
+        [HttpGet("{id}")]
+        public FlightRm Find(Guid id) => Flights.singleOrDefault(f => f.Id == id);
     }
 }
